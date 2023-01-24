@@ -1,2 +1,6 @@
 dog.ceo
 https://jsonplaceholder.typicode.com/guide/
+
+
+Chat Gpt:
+complete code of a responsive modern portfolio website using react js and styled components,including navbar,hero section,about section,services,contact and footer
