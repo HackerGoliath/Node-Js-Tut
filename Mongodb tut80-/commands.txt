@@ -1,0 +1,11 @@
+Tut-80
+> show dbs - show databases
+> show collections
+
+Create datbase
+> use <dbname>
+
+Insert data into db
+db.text.insert({})
+
+Tut-81
