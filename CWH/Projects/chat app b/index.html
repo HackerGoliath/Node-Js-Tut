@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Socket.IO chat</title>
+    <style>
+        body {
+            height: 100vh;
+            background-image: linear-gradient(rgb(255, 255, 255), rgb(5, 112, 28));
+        }
+
+        .logo {
+            display: block;
+            margin: auto;
+            width: 50px;
+            height: 50px;
+        }
+
+        .container {
+            max-width: 955px;
+            border: 2px solid black;
+            margin: auto;
+            height: 60vh;
+            padding: 33px;
+            overflow-y: auto;
+            margin-bottom: 23px;
+        }
+
+        .message {
+            background: rgb(180, 177, 177);
+            width: 24%;
+            padding: 10px;
+            margin: 17px 12px;
+            border: 2px solid black;
+            border-radius: 10px;
+        }
+
+        .left {
+            float: left;
+            clear: both;
+        }
+
+        .right {
+            float: right;
+            clear: both;
+        }
+
+        #send-container {
+            display: block;
+            margin: auto;
+            width: 100%;
+            max-width: 985px;
+            text-align: center;
+        }
+
+        #messageInp {
+            width: 91%;
+            height: 34px;
+            border: 2px solid black;
+            border-radius: 6px;
+        }
+
+        .btn {
+            cursor: pointer;
+            border: 2px solid black;
+            border-radius: 6px;
+            height: 34px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <img class="logo" src="chat.png" alt="">
+    </nav>
+    <div class="container">
+        <div class="message right">Deepak: Hey how are you?</div>
+        <div class="message left">Rohan: I am fine. How about you?</div>
+    </div>
+
+    <div class="send">
+        <form action="#" id="send-container">
+            <input type="text" name="messageInp" id="messageInp">
+            <button class="btn" type="submit">Send</button>
+        </form>
+    </div>
+    <script src="http://localhost:3000/socket.io/socket.io.js"></script>
+    <!-- <script>
+        var socket = io();
+
+        var messages = document.getElementById('messages');
+        var form = document.getElementById('form');
+        var input = document.getElementById('input');
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            if (input.value) {
+                socket.emit('chat message', input.value);
+                input.value = '';
+            }
+        });
+
+        socket.on('chat message', function (msg) {
+            var item = document.createElement('li');
+            item.textContent = msg;
+            messages.appendChild(item);
+            window.scrollTo(0, document.body.scrollHeight);
+        });
+    </script> -->
+    <script src="/js/client.js"></script>
+</body>
+</html>

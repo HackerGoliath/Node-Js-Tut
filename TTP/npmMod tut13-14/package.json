@@ -1,0 +1,15 @@
+{
+  "name": "npmmod-tut13",
+  "version": "1.0.0",
+  "description": "Thapa technical tuts",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Deepak",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^4.1.0",
+    "validator": "^13.7.0"
+  }
+}
