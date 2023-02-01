@@ -1,0 +1,4 @@
+create new folder
+> mkdir <foldername>
+create new file
+> type nul > <filename.ext>
