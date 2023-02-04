@@ -1,7 +1,7 @@
 {
-  "name": "expressweb",
+  "name": "nodemailerapp",
   "version": "1.0.0",
-  "description": "Responsive weather app",
+  "description": "fake mail generator",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,6 +10,6 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.18.2",
-    "hbs": "^4.2.0"
+    "nodemailer": "^6.9.1"
   }
 }

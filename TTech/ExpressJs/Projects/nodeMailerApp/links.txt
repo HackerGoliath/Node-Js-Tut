@@ -1,0 +1,3 @@
+https://nodemailer.com/about/
+
+SMTP service: https://ethereal.email/
