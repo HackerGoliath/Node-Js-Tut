@@ -1,5 +1,5 @@
 node_modules
-MongoDb
+# MongoDb
 # misc
 .DS_Store
 .env.local
