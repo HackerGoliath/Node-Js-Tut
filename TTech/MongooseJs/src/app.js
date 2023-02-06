@@ -11,13 +11,48 @@ mongoose.connect("mongodb://127.0.0.1:27017/DeepakTest")
 const Schema = mongoose.Schema;
 
 // Create a schema -> Structure of document
+// const playlistSchema = new mongoose.Schema({
+//     name: {
+//         type: String,
+//         required: true
+//     },
+//     ctype: String,
+//     videos: Number,
+//     author: String,
+//     active: Boolean,
+//     date: {
+//         type: Date,
+//         default: Date.now
+//     }
+// });
+
+
+// Built in Validations
 const playlistSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true
+        required: true,
+        // unique is not a validator
+        // unique: true,
+        lowercase: true,
+        // uppercase: true,
+
+        // remove starting and ending whitespaces
+        trim: true,
+        // minlength: 2,
+        minlength: [2, "Minimum 2 letters"],
+        maxlength: 30
     },
-    ctype: String,
-    videos: Number,
+    ctype: {
+        type: String,
+        enum: ["frontend", "backend", "database"],
+        lowercase: true
+    },
+    videos: {
+        type: Number,
+        min: 10,
+        max: 100
+    },
     author: String,
     active: Boolean,
     date: {
@@ -56,50 +91,51 @@ const Playlist = new mongoose.model("Playlist", playlistSchema);
 // Create single document or insert data
 const createDocument = async () => {
     try {
-        const jsPlaylist = new Playlist({
-            name: "javascript",
-            ctype: "Front End",
-            videos: 150,
-            author: "Deepak",
-            active: true,
-        });
-        const expressPlaylist = new Playlist({
-            name: "Express Js",
-            ctype: "Back End",
-            videos: 30,
-            author: "Deepak",
-            active: true,
-        });
-        const mongoPlaylist = new Playlist({
-            name: "MongoDb",
-            ctype: "Database",
-            videos: 10,
-            author: "Deepak",
-            active: true,
-        });
-        const mongoosePlaylist = new Playlist({
-            name: "Mongoose",
-            ctype: "Database",
-            videos: 5,
-            author: "Deepak",
-            active: true,
-        });
+        // const jsPlaylist = new Playlist({
+        //     name: "javascript",
+        //     ctype: "Front End",
+        //     videos: 150,
+        //     author: "Deepak",
+        //     active: true,
+        // });
+        // const expressPlaylist = new Playlist({
+        //     name: "Express Js",
+        //     ctype: "Back End",
+        //     videos: 30,
+        //     author: "Deepak",
+        //     active: true,
+        // });
+        // const mongoPlaylist = new Playlist({
+        //     name: "MongoDb",
+        //     ctype: "Database",
+        //     videos: 10,
+        //     author: "Deepak",
+        //     active: true,
+        // });
+        // const mongoosePlaylist = new Playlist({
+        //     name: "Mongoose",
+        //     ctype: "Database",
+        //     videos: 5,
+        //     author: "Deepak",
+        //     active: true,
+        // });
         const nextjsPlaylist = new Playlist({
-            name: "Next Js",
-            ctype: "Front End and Back End",
-            videos: 102,
+            name: "NextJs6.1",
+            ctype: "BackEnd",
+            videos: 115,
             author: "Deepak",
             active: true,
         });
 
-        const result = await Playlist.insertMany([jsPlaylist, expressPlaylist, mongoPlaylist, mongoosePlaylist, nextjsPlaylist]);
+        // const result = await Playlist.insertMany([jsPlaylist, expressPlaylist, mongoPlaylist, mongoosePlaylist, nextjsPlaylist]);
+        const result = await Playlist.insertMany([nextjsPlaylist]);
         console.log(result);
     } catch (err) {
         console.log(err);
     }
 }
 
-// createDocument();
+createDocument();
 // ---------------------------
 
 // Read Data
@@ -143,4 +179,42 @@ const getDocument = async () => {
     }
 }
 
-getDocument();
+// getDocument();
+
+// Update the document
+// const updateDocument = async (id) => {
+const updateDocument = async (_id) => {
+    try {
+        // const result = await Playlist.updateOne({ _id: id }, {
+        // const result = await Playlist.updateOne({ _id }, {
+
+        // get the previous document as ouput
+        const result = await Playlist.findByIdAndUpdate({ _id }, {
+            $set: {
+                name: "Advanced Javascript Pro"
+            }
+        }, {
+            // If you want modified data as output
+            new: true
+        }
+        );
+        console.log(result);
+    } catch (error) {
+        console.log(result);
+    }
+}
+
+// updateDocument("63df9a9d921a69ac54596499")
+
+// Delete the document
+const deleteDocument = async (_id) => {
+    try {
+        // const result = await Playlist.deleteOne({ _id })
+        const result = await Playlist.findByIdAndDelete({ _id }) // show the deleted document
+        console.log(result);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+// deleteDocument("63df9a9d921a69ac5459649c")
