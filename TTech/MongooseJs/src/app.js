@@ -27,7 +27,42 @@ const Schema = mongoose.Schema;
 // });
 
 
-// Built in Validations
+// // Built in Validations
+// const playlistSchema = new mongoose.Schema({
+//     name: {
+//         type: String,
+//         required: true,
+//         // unique is not a validator
+//         // unique: true,
+//         lowercase: true,
+//         // uppercase: true,
+
+//         // remove starting and ending whitespaces
+//         trim: true,
+//         // minlength: 2,
+//         minlength: [2, "Minimum 2 letters"],
+//         maxlength: 30
+//     },
+//     ctype: {
+//         type: String,
+//         enum: ["frontend", "backend", "database"],
+//         lowercase: true
+//     },
+//     videos: {
+//         type: Number,
+//         min: 10,
+//         max: 100
+//     },
+//     author: String,
+//     active: Boolean,
+//     date: {
+//         type: Date,
+//         default: Date.now
+//     }
+// });
+
+
+// Custom or user defined Validations
 const playlistSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -50,8 +85,23 @@ const playlistSchema = new mongoose.Schema({
     },
     videos: {
         type: Number,
-        min: 10,
-        max: 100
+        // min: 10,
+        // max: 100
+
+        // 1st method:
+        validate(value) {
+            if (value < 0) {
+                throw new Error("Video count must not be negative");
+            }
+        }
+
+        // 2nd method:
+        // validate: {
+        //     validator: function (value) {
+        //         return value.length < 0
+        //     },
+        //     message: "Video count must not be negative"
+        // }
     },
     author: String,
     active: Boolean,
@@ -122,7 +172,7 @@ const createDocument = async () => {
         const nextjsPlaylist = new Playlist({
             name: "NextJs6.1",
             ctype: "BackEnd",
-            videos: 115,
+            videos: -115,
             author: "Deepak",
             active: true,
         });
