@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const validator = require('validator');
 
 // Connection creation and creating a new db
 mongoose.set('strictQuery', false);
@@ -104,6 +105,17 @@ const playlistSchema = new mongoose.Schema({
         // }
     },
     author: String,
+    // npm validator
+    email: {
+        type: String,
+        required: true,
+        validate(value) {
+            if (!validator.isEmail(value)) {
+                throw new Error("Invalid email entered");
+            }
+        }
+
+    },
     active: Boolean,
     date: {
         type: Date,
@@ -170,10 +182,11 @@ const createDocument = async () => {
         //     active: true,
         // });
         const nextjsPlaylist = new Playlist({
-            name: "NextJs6.1",
+            name: "NextJs@6.2",
             ctype: "BackEnd",
-            videos: -115,
+            videos: 115,
             author: "Deepak",
+            email: "deepak.mo@bo.co",
             active: true,
         });
 
