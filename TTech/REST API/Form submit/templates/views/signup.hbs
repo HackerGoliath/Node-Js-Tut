@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {{>headerlinks}}
+</head>
+<body>
+    {{>navbar}}
+    <h1>Sign Up Form</h1>
+    <form action="/register" method="post">
+        <input type="text" name="name" placeholder="Enter your name" value="">
+        <input type="email" name="email" placeholder="Enter your email" value="">
+        <input type="text" name="phone" placeholder="Enter your phone number" value="">
+        <input type="text" name="age" placeholder="Enter your age" value="">
+        <input type="password" name="password" placeholder="Enter your password" value="">
+        <input type="password" name="cpassword" placeholder="Confirm your password" value="">
+        <input type="radio" name="gender" value="male" checked>Male
+        <input type="radio" name="gender" value="female">female
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
