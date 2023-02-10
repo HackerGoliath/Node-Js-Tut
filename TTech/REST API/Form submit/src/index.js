@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require("path");
 const hbs = require('hbs');
+const bcrypt = require("bcryptjs");
 // const bodyParser = require("body-parser");
 const app = express();
 require("./db/conn");
@@ -47,11 +48,12 @@ app.post("/register", async (req, res) => {
                 phone: req.body.phone,
                 age: req.body.age,
                 password: password,
+                cpassword: cpassword,
                 gender: req.body.gender,
             });
             const result = await registerEmployee.save();
-            console.log(result);
-            res.send(result);
+            // res.send(result);
+            res.render("login");
         }
         else {
             res.status(400).send("Passwords not matching")
@@ -65,8 +67,11 @@ app.post("/login", async (req, res) => {
     try {
         const email = req.body.email;
         const password = req.body.password;
-        const result = await Register.findOne({ email })
-        if (result.password === password) {
+        const result = await Register.findOne({ email });
+
+        const isMatch = await bcrypt.compare(password, result.password);
+        // if (result.password === password) {
+        if (isMatch) {
             // res.send(result.password); // to know password
             res.render("index");
         }
@@ -78,6 +83,24 @@ app.post("/login", async (req, res) => {
     }
 
 });
+
+
+/* Encryption (Two way communication)
+deepak -> rghyokhg
+
+hashing (One way communication)
+deepak -> $fwfgw1241fg&^%*%*.sdarf1441.124141faffqfqef
+
+Implementation of bcryptjs
+const bcrypt = require("bcryptjs");
+const securePassword = async (password) => {
+    const passHash = await bcrypt.hash(password, 10);
+    console.log(passHash);
+    const passMatch = await bcrypt.compare(password, passHash);
+    console.log(passMatch);
+}
+securePassword("deepak@123");
+*/
 
 app.listen(PORT, () => {
     console.log(`Listening at http://${HOST}:${PORT}`);
