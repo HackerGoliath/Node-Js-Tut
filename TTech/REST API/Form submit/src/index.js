@@ -1,8 +1,6 @@
 const express = require('express');
 const path = require("path");
 const hbs = require('hbs');
-const bcrypt = require("bcryptjs");
-// const bodyParser = require("body-parser");
 const app = express();
 require("./db/conn");
 const PORT = "8000";
@@ -51,9 +49,15 @@ app.post("/register", async (req, res) => {
                 cpassword: cpassword,
                 gender: req.body.gender,
             });
+            // console.log("The success part", registerEmployee);
+
+            // Middleware
+            const token = await registerEmployee.generateAuthToken();
+            // console.log("The token is :", token);
+
             const result = await registerEmployee.save();
             // res.send(result);
-            res.render("login");
+            res.render("index");
         }
         else {
             res.status(400).send("Passwords not matching")
@@ -81,7 +85,6 @@ app.post("/login", async (req, res) => {
     } catch (error) {
         res.status(500).send("Server Error");
     }
-
 });
 
 
@@ -100,6 +103,21 @@ const securePassword = async (password) => {
     console.log(passMatch);
 }
 securePassword("deepak@123");
+*/
+
+
+/* JWT (Jason Web Token) -> it is called stateless because there is no info on server
+const jwt = require("jsonwebtoken");
+const createToken = async () => {
+    const token = await jwt.sign({ _id: "dfwswg36363636233" }, "secretKeyHere", {
+        expiresIn: "2 seconds"
+    });
+    console.log(token);
+
+    const userVer = await jwt.verify(token, "secretKeyHere");
+    console.log(userVer);
+}
+createToken();
 */
 
 app.listen(PORT, () => {
