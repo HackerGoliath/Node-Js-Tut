@@ -3,6 +3,9 @@ const express = require('express');
 const path = require("path");
 const bcrypt = require("bcryptjs");
 const hbs = require('hbs');
+const cookieParser = require('cookie-parser');
+const auth = require("./middleware/auth");
+
 const app = express();
 require("./db/conn");
 const Register = require("./models/registration");
@@ -10,6 +13,7 @@ const Register = require("./models/registration");
 // console.log(path.join(__dirname, "../public"));
 
 // app.use(express.json());
+app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 
 const staticPath = path.join(__dirname, "../public");
@@ -23,6 +27,27 @@ hbs.registerPartials(partialsPath);
 
 app.get("/", (req, res) => {
     res.render("index");
+});
+
+app.get("/secret", auth, async (req, res) => {
+    // console.log(`The cookie is : ${req.cookies.jwt}`);
+    res.render("secret");
+});
+
+app.get("/logout", auth, async (req, res) => {
+    try {
+        // console.log(req.user);
+
+        req.user.tokens = req.user.tokens.filter((currentElement) => {
+            return currentElement.token !== req.token
+        });
+        res.clearCookie("jwt");
+        console.log("Logout Successfully");
+        await req.user.save();
+        res.render("login");
+    } catch (error) {
+        res.status(500).send(error);
+    }
 });
 
 app.get("/signup", (req, res) => {
@@ -55,6 +80,16 @@ app.post("/register", async (req, res) => {
             const token = await registerEmployee.generateAuthToken();
             // console.log("The token is :", token);
 
+            /*The res.cookie() function is used to set the cookie name to value
+            The value parameter may be a string or object converted to JSON.
+            Syntax:
+            res.cookie(name,value,[options])
+            */
+
+            res.cookie("jwt", token, {
+                expires: new Date(Date.now() + 30000),
+                httpOnly: true
+            });
             const result = await registerEmployee.save();
             // res.send(result);
             res.render("index");
@@ -72,12 +107,20 @@ app.post("/login", async (req, res) => {
         const email = req.body.email;
         const password = req.body.password;
         const data = await Register.findOne({ email });
-        console.log(data.password);
-        console.log(password);
+        // console.log(data.password);
+        // console.log(password);
         const isMatch = await bcrypt.compare(password, data.password);
-        console.log(isMatch);
+        // console.log(isMatch);
         const token = await data.generateAuthToken();
         console.log("The token is :", token);
+
+        res.cookie("jwt", token, {
+            expires: new Date(Date.now() + 600000),
+            httpOnly: true,
+            // for https version
+            // secure:true
+        });
+
         // if (data.password === password) {
         if (isMatch) {
             // res.send(data.password); // to know password
