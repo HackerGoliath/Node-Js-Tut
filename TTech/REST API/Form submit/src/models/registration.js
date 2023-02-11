@@ -18,9 +18,6 @@ const registerPerson = new mongoose.Schema({
     password: {
         type: String
     },
-    cpassword: {
-        type: String
-    },
     gender: {
         type: String
     },
@@ -36,7 +33,7 @@ const registerPerson = new mongoose.Schema({
 registerPerson.methods.generateAuthToken = async function () {
     try {
         // console.log(this._id);
-        const token = await jwt.sign({ _id: this._id.toString() }, "secretKeyHere");
+        const token = await jwt.sign({ _id: this._id.toString() }, process.env.SECRET_KEY);
         this.tokens = this.tokens.concat({ token });
         await this.save();
         // console.log(token);
@@ -50,12 +47,11 @@ registerPerson.methods.generateAuthToken = async function () {
 
 // Converting password into hash
 registerPerson.pre("save", async function (next) {
-    if (this.isModified) {
+    if (this.isModified("password")) {
         // const passHash = await bcrypt.hash(password, 10);
         // console.log(`The current password is ${this.password}`);
         this.password = await bcrypt.hash(this.password, 10);
         // console.log(`The current password is ${this.password}`);
-        this.cpassword = await bcrypt.hash(this.password, 10);
     }
     next();
 });

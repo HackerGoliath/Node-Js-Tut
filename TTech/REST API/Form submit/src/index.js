@@ -1,10 +1,10 @@
+require('dotenv').config();
 const express = require('express');
 const path = require("path");
+const bcrypt = require("bcryptjs");
 const hbs = require('hbs');
 const app = express();
 require("./db/conn");
-const PORT = "8000";
-const HOST = "localhost";
 const Register = require("./models/registration");
 
 // console.log(path.join(__dirname, "../public"));
@@ -19,6 +19,7 @@ app.use(express.static(staticPath));
 app.set("view engine", "hbs");
 app.set("views", templatePath);
 hbs.registerPartials(partialsPath);
+
 
 app.get("/", (req, res) => {
     res.render("index");
@@ -46,7 +47,6 @@ app.post("/register", async (req, res) => {
                 phone: req.body.phone,
                 age: req.body.age,
                 password: password,
-                cpassword: cpassword,
                 gender: req.body.gender,
             });
             // console.log("The success part", registerEmployee);
@@ -71,12 +71,16 @@ app.post("/login", async (req, res) => {
     try {
         const email = req.body.email;
         const password = req.body.password;
-        const result = await Register.findOne({ email });
-
-        const isMatch = await bcrypt.compare(password, result.password);
-        // if (result.password === password) {
+        const data = await Register.findOne({ email });
+        console.log(data.password);
+        console.log(password);
+        const isMatch = await bcrypt.compare(password, data.password);
+        console.log(isMatch);
+        const token = await data.generateAuthToken();
+        console.log("The token is :", token);
+        // if (data.password === password) {
         if (isMatch) {
-            // res.send(result.password); // to know password
+            // res.send(data.password); // to know password
             res.render("index");
         }
         else {
@@ -120,6 +124,6 @@ const createToken = async () => {
 createToken();
 */
 
-app.listen(PORT, () => {
-    console.log(`Listening at http://${HOST}:${PORT}`);
+app.listen(process.env.PORT, () => {
+    console.log(`Listening at http://${process.env.HOST}:${process.env.PORT}`);
 })
