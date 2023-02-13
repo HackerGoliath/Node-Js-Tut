@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {{>header}}
+    <title>Home Page</title>
+</head>
+<body>
+    {{>navbar}}
+    <!-- hero section starts -->
+    <div class="container-fluid mt-5">
+        <div class="row">
+            <div class="col-12 col-md-10 mx-auto">
+                <div class="row">
+                    <div
+                        class="col-12 col-md-6 hero-text order-1 order-md-0 d-flex justify-content-center align-items-start flex-column">
+                        <h1>WE WILL HELP YOU TO</h1>
+                        <h1>GROW YOUR BUSSINESS</h1>
+                        <p>We Are The Team Of <span class="bold-style text-success fs-2">Professional
+                                Developers</span>✌
+                        </p>
+                        <button class="btn btn-style btn-danger">Read More</button>
+                    </div>
+                    <!-- right side -->
+                    <div class="col-12 col-md-6 hero-text order-0 order-md-1">
+                        <figure>
+                            <img class="h-75 w-75" src="images/growth.png" alt="herosection_image">
+                        </figure>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- hero section ends -->
+
+    <!-- about section starts -->
+    {{>about}}
+    <!-- about section ends -->
+
+    <!-- our services section starts -->
+    {{>service}}
+    <!-- our services section ends -->
+
+    <!-- maps section starts -->
+    {{>maps}}
+    <!-- maps section ends -->
+
+    <!-- contact section starts -->
+    {{>contact}}
+    <!-- contact section ends -->
+
+    <!-- footer section starts -->
+    {{>footer}}
+    <!-- footer section ends -->
+
+</body>
+</html>
