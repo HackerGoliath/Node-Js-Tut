@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>KBC Quiz App</title>
+    <style>
+        /* Styles for the header and navigation bar */
+        header {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav li {
+            display: inline-block;
+            margin-right: 20px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+        }
+
+        /* Styles for the main content */
+        .container {
+            max-width: 800px;
+            max-height: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            display: grid;
+            place-items: center;
+        }
+
+        .question-container {
+            margin-bottom: 20px;
+        }
+
+        .question {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .answer-container {
+            margin: 20px 20px 20px 0px;
+        }
+
+        .choice {
+            background-color: #553e3e;
+            color: white;
+            padding: 5px 15px;
+            margin: 5px;
+            border-radius: 15px;
+        }
+
+        .choice:hover {
+            background-color: #000;
+            color: white;
+            cursor: pointer;
+        }
+
+        .choice-selected {
+            background-color: #000;
+            cursor: pointer;
+        }
+
+        #correct {
+            margin: 5px 4px;
+            color: green;
+        }
+
+        .btn {
+            background-color: #6b7b7f;
+            color: white;
+            padding: 9px 141px;
+            margin: 5px;
+            border-radius: 5px;
+            font-size: 23px;
+        }
+
+        .btn:hover {
+            background-color: white;
+            color: #6b7b7f;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Quiz</a></li>
+                <li><a href="#">About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <h1>Kaun Banega Crorepati</h1>
+            <div class="question-container">
+                <div class="question">Question: </div>
+                <div class="question-text"></div>
+                <div class="answer-container">
+                    <button id="choice-1" class="choice">choice 1</button>
+                    <button id="choice-2" class="choice">choice 2</button>
+                    <button id="choice-3" class="choice">choice 3</button>
+                    <button id="choice-4" class="choice">choice 4</button>
+                </div>
+                <span id="correct"></span>
+            </div>
+            <button class="btn" id="submit" type="submit">Submit</button>
+            <button class="btn" id="restart" type="submit">Restart</button>
+        </div>
+    </main>
+</body>
+<script>
+    let currentQuestion = 0;
+    let userChoices = {}
+    const questions = [
+        ["What is the capital of France?", "Berlin", "Paris", "London", "Madrid", 1],
+        ["What is the largest planet in our solar system?", "Venus", "Saturn", "Jupiter", "Mars", 3],
+        ["What is the smallest country in the world?", "Monaco", "San Marino", "Vatican City", "Liechtenstein", 3],
+        ["What is the chemical symbol for gold?", "Ag", "Fe", "Au", "Pb", 3],
+        ["What is the highest mountain in the world?", "Mount Kilimanjaro", "Mount Everest", "Mount Denali", "Mount Fuji", 2],
+        ["What is the largest animal on Earth?", "Blue Whale", "African Elephant", "Giraffe", "Hippopotamus", 1],
+        ["What is the capital of Australia?", "Sydney", "Melbourne", "Canberra", "Brisbane", 3],
+        ["What is the chemical symbol for sodium?", "Na", "Ni", "Ne", "No", 1],
+        ["What is the smallest ocean in the world?", "Arctic Ocean", "Indian Ocean", "Atlantic Ocean", "Southern Ocean", 4],
+        ["What is the largest desert in the world?", "Sahara Desert", "Gobi Desert", "Kalahari Desert", "Antarctica", 1],
+        ["What is the largest country in the world by land area?", "Russia", "China", "Canada", "United States", 1],
+    ];
+
+    const evaluateQuiz = () => {
+        let correct = 0;
+        let ind = 0;
+        for (item in userChoices) {
+            let currentChoice = parseInt(userChoices[item].split("-")[1]);
+            if ((1 + questions[ind][5]) == currentChoice) {
+                correct++;
+            }
+            ind++;
+        }
+        document.getElementById("correct").innerHTML = `You answered ${correct} out of ${questions.length} questions correct. Thanks!`
+    }
+    const showQuestion = () => {
+        let question = questions[currentQuestion];
+        document.querySelector(".question-text").innerHTML = question[0]
+        document.querySelectorAll(".choice").forEach((e, ind) => {
+            // Add event listener to all choices
+            e.addEventListener("click", () => {
+                userChoices[currentQuestion] = e.id;
+                console.log(userChoices);
+                document.querySelectorAll(".choice").forEach(e => e.classList.remove("choice-selected"))
+                e.classList.add("choice-selected");
+            })
+
+            if ((ind + 1) == 6) {
+            }
+            else {
+                e.innerHTML = question[ind + 1];
+            }
+        })
+        if (currentQuestion < questions.length - 1) {
+            currentQuestion++;
+        }
+        else {
+            currentQuestion++;
+            // document.getElementById("submit").disabled = true;
+            // evaluateQuiz();
+            document.getElementById("submit").addEventListener("click", evaluateQuiz)
+            document.getElementById("submit").removeEventListener("click", showQuestion)
+        }
+    }
+    showQuestion();
+    document.getElementById("submit").addEventListener("click", showQuestion)
+    document.getElementById("restart").addEventListener("click", () => {
+        currentQuestion = 0;
+        userChoices = {}
+        showQuestion();
+    })
+</script>
+</html>
